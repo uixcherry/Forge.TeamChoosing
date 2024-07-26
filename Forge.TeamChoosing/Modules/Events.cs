@@ -34,7 +34,7 @@ namespace Forge.TeamChoosing.Modules
             }
         }
 
-        private static void AssignPlayerToTeam(UnturnedPlayer player, TeamConfig teamConfig)
+        public static void AssignPlayerToTeam(UnturnedPlayer player, TeamConfig teamConfig)
         {
             if (!HasPermission(player, teamConfig.Permission))
             {
