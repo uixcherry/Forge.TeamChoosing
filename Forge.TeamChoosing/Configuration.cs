@@ -18,6 +18,8 @@ namespace Forge.TeamChoosing
 
         public byte MaxTeamImbalance { get; set; } = 2;
 
+        public Vector3 DefaultBaseLocation { get; set; } = new Vector3(50, 0, 50);
+
         [XmlArrayItem(ElementName = "Team")]
         public List<TeamConfig> Teams { get; set; } = new List<TeamConfig>();
 

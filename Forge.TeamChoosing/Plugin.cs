@@ -2,6 +2,7 @@
 using Rocket.Core.Logging;
 using Rocket.Core.Plugins;
 using Rocket.Unturned;
+using Rocket.Unturned.Events;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
@@ -24,12 +25,15 @@ namespace Forge.TeamChoosing
 
             U.Events.OnPlayerConnected += Events.OnPlayerConnected;
             EffectManager.onEffectButtonClicked += Events.onEffectButtonClicked;
+            UnturnedPlayerEvents.OnPlayerRevive += Events.OnPlayerRevive;
 
             CreateTeamGroups();
         }
 
         protected override void Unload()
         {
+            UnturnedPlayerEvents.OnPlayerRevive += Events.OnPlayerRevive;
+
             U.Events.OnPlayerConnected -= Events.OnPlayerConnected;
             EffectManager.onEffectButtonClicked -= Events.onEffectButtonClicked;
 

@@ -6,6 +6,7 @@ using Rocket.Unturned.Chat;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using UnityEngine;
 
 namespace Forge.TeamChoosing.Modules
 {
@@ -48,6 +49,7 @@ namespace Forge.TeamChoosing.Modules
                         player.Player.quests.ServerAssignToGroup(Plugin.Instance.teamIds[teamConfig.Name], EPlayerGroupRank.MEMBER, true);
                         player.Player.quests.sendSetRadioFrequency(teamConfig.RadioFrequency);
                         UnturnedChat.Say(player, $"You have been assigned to {teamConfig.Name}.");
+                        TeleportPlayer(player, teamConfig.BaseLocation);
                     }
                     else
                     {
@@ -65,6 +67,11 @@ namespace Forge.TeamChoosing.Modules
             }
         }
 
+        private static void TeleportPlayer(UnturnedPlayer player, Vector3 location)
+        {
+            player.Teleport(location, player.Player.transform.rotation.eulerAngles.y);
+        }
+
         private static bool HasPermission(UnturnedPlayer player, string permission)
         {
             return R.Permissions.HasPermission(player, new List<string> { permission });
@@ -75,6 +82,7 @@ namespace Forge.TeamChoosing.Modules
             if (!HasTeamPermission(player))
             {
                 Plugin.Instance.TeamChoosingUI(player);
+                TeleportPlayer(player, Plugin.Instance.Configuration.Instance.DefaultBaseLocation);
             }
         }
 
@@ -86,6 +94,18 @@ namespace Forge.TeamChoosing.Modules
                 .ToList();
 
             return validPermissions.Any();
+        }
+
+        public static void OnPlayerRevive(UnturnedPlayer player, Vector3 position, byte angle)
+        {
+            var playerGroups = R.Permissions.GetGroups(player, true);
+            var team = Plugin.Instance.Configuration.Instance.Teams
+                .FirstOrDefault(t => playerGroups.Any(group => R.Permissions.HasPermission(player, new List<string> { t.Permission })));
+
+            if (team != null)
+            {
+                TeleportPlayer(player, team.BaseLocation);
+            }
         }
     }
 }
