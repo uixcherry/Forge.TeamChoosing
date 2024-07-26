@@ -1,4 +1,5 @@
 ﻿using Forge.TeamChoosing.Modules;
+using Rocket.API.Collections;
 using Rocket.Core.Logging;
 using Rocket.Core.Plugins;
 using Rocket.Unturned;
@@ -124,5 +125,22 @@ namespace Forge.TeamChoosing
         {
             return Provider.clients.Count(client => client.player != null && client.player.quests.groupID == teamId);
         }
+
+        public override TranslationList DefaultTranslations => new TranslationList
+        {
+            { "team_changed", "Player '{0}' has been moved to team '{1}'." },
+            { "team_info", "Team '{0}':\nMembers: {1}" },
+            { "teams_wiped", "All teams have been wiped." },
+            { "player_kicked", "Player '{0}' has been kicked from their team." },
+            { "set_spawn", "Spawn point for team '{0}' has been set to your current location." },
+            { "set_start", "Start location for new players has been set to your current location." },
+            { "team_not_found", "Team '{0}' not found." },
+            { "player_not_found", "Player '{0}' not found." },
+            { "invalid_command", "Invalid command. Use {0}" },
+            { "usage_change", "Usage: /team change <player> <team>" },
+            { "usage_info", "Usage: /team info <team>" },
+            { "usage_kick", "Usage: /team kick <player>" },
+            { "usage_setspawn", "Usage: /team setspawn <team>" },
+        };
     }
 }
