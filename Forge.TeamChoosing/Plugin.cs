@@ -121,6 +121,11 @@ namespace Forge.TeamChoosing
             }
         }
 
+        public bool IsGroupRestricted(CSteamID groupId)
+        {
+            return teamIds.Values.Contains(groupId);
+        }
+
         public int GetTeamMemberCount(CSteamID teamId)
         {
             return Provider.clients.Count(client => client.player != null && client.player.quests.groupID == teamId);

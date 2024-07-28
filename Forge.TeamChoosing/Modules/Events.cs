@@ -107,5 +107,21 @@ namespace Forge.TeamChoosing.Modules
                 TeleportPlayer(player, team.BaseLocation);
             }
         }
+
+        public static void OnPlayerDisconnected(UnturnedPlayer player)
+        {
+            var playerGroups = R.Permissions.GetGroups(player, true);
+            foreach (var team in Plugin.Instance.Configuration.Instance.Teams)
+            {
+                if (playerGroups.Any(group => R.Permissions.HasPermission(player, new List<string> { team.Permission })))
+                {
+                    var groupId = Plugin.Instance.teamIds[team.Name];
+                    if (Plugin.Instance.IsGroupRestricted(groupId))
+                    {
+                        UnturnedChat.Say(player, $"You cannot leave the team '{team.Name}'.");
+                    }
+                }
+            }
+        }
     }
 }
